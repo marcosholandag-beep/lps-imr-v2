@@ -428,6 +428,9 @@ section{padding:78px 0}
 .field input{width:100%;padding:13px 15px;border:1.5px solid var(--line);border-radius:11px;
   font-family:inherit;font-size:14.5px;color:var(--ink);background:var(--cream)}
 .field input:focus{outline:none;border-color:var(--teal)}
+.field input.err-input,.field input.err-input:focus{border-color:#d0342c;background:#fdf2f0}
+.field .err-msg{display:none;font-size:11.5px;font-weight:700;color:#d0342c;margin-top:6px}
+.field .err-msg.show{display:block}
 .consent{display:flex;gap:9px;align-items:flex-start;margin:6px 0 18px}
 .consent input{margin-top:3px;accent-color:var(--teal)}
 .consent label{font-size:12px;color:var(--muted)}
@@ -928,7 +931,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="field">
         <label for="whats">WhatsApp</label>
-        <input id="whats" name="whatsapp" type="tel" required placeholder="(00) 00000-0000"/>
+        <input id="whats" name="whatsapp" type="tel" required inputmode="numeric" autocomplete="tel"
+               maxlength="15" placeholder="(00) 00000-0000" aria-describedby="whats-err"/>
+        <p class="err-msg" id="whats-err">Digite um WhatsApp válido com DDD. Ex.: (82) 99999-9999</p>
       </div>
       <div class="consent">
         <input id="consent" type="checkbox" required/>
@@ -1078,16 +1083,78 @@ document.querySelectorAll('[data-carousel]').forEach(function(car){
 
 var LP_WEBHOOK='https://hook.us2.make.com/m4fnxjan4ivwfoj7msp67u3nlr4ta1hl';
 var LP_VARIANTE='B';
+
+/* ===== Máscara + validação do WhatsApp ===== */
+var LP_DDDS=('11,12,13,14,15,16,17,18,19,21,22,24,27,28,31,32,33,34,35,37,38,'+
+  '41,42,43,44,45,46,47,48,49,51,53,54,55,61,62,63,64,65,66,67,68,69,'+
+  '71,73,74,75,77,79,81,82,83,84,85,86,87,88,89,91,92,93,94,95,96,97,98,99').split(',');
+function lpDigits(v){return (v||'').replace(/\D/g,'');}
+function lpMaskPhone(v){
+  var d=lpDigits(v).slice(0,11);
+  if(!d)return '';
+  if(d.length<3)return '('+d;
+  var out='('+d.slice(0,2)+') ';
+  if(d.length<=6)return out+d.slice(2);
+  if(d.length<=10)return out+d.slice(2,6)+'-'+d.slice(6);
+  return out+d.slice(2,7)+'-'+d.slice(7);
+}
+function lpPhoneError(v){
+  var d=lpDigits(v);
+  if(!d)return 'Informe seu WhatsApp com DDD.';
+  if(d.length<11)return 'Número incompleto: use DDD + 9 dígitos.';
+  if(LP_DDDS.indexOf(d.slice(0,2))<0)return 'DDD inválido. Confira os 2 primeiros dígitos.';
+  if(d.charAt(2)!=='9')return 'Celular deve começar com 9 depois do DDD.';
+  if(/^(\d)\1+$/.test(d))return 'Digite um número de WhatsApp válido.';
+  return '';
+}
+function lpCheckPhone(show){
+  var inp=document.getElementById('whats');
+  var msg=document.getElementById('whats-err');
+  if(!inp)return true;
+  var err=lpPhoneError(inp.value);
+  if(err&&show){
+    if(msg){msg.textContent=err;msg.classList.add('show');}
+    inp.classList.add('err-input');
+    inp.setAttribute('aria-invalid','true');
+  }
+  return !err;
+}
+function lpClearPhoneError(){
+  var inp=document.getElementById('whats');
+  var msg=document.getElementById('whats-err');
+  if(inp){inp.classList.remove('err-input');inp.removeAttribute('aria-invalid');}
+  if(msg)msg.classList.remove('show');
+}
+(function(){
+  var inp=document.getElementById('whats');
+  if(!inp)return;
+  inp.addEventListener('input',function(){
+    var pos=inp.selectionStart,len=inp.value.length;
+    inp.value=lpMaskPhone(inp.value);
+    if(pos!==null&&pos<len){
+      var p=Math.max(0,pos+(inp.value.length-len));
+      try{inp.setSelectionRange(p,p);}catch(err){}
+    }
+    lpClearPhoneError();
+  });
+  inp.addEventListener('blur',function(){if(inp.value)lpCheckPhone(true);});
+})();
+
 function lpSubmit(e){
   e.preventDefault();
   var form=e.target;
+  if(!lpCheckPhone(true)){
+    var w=document.getElementById('whats');
+    if(w)w.focus();
+    return false;
+  }
   var btn=form.querySelector('button[type="submit"]');
   var label=btn?btn.innerHTML:'';
   if(btn){btn.disabled=true;btn.innerHTML='Enviando...';}
   var payload={
     nome:form.nome.value.trim(),
     email:form.email.value.trim(),
-    whatsapp:form.whatsapp.value.trim(),
+    whatsapp:'55'+lpDigits(form.whatsapp.value),
     variante:LP_VARIANTE,
     origem:location.href,
     enviado_em:new Date().toISOString()
