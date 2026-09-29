@@ -1,12 +1,13 @@
-# LPs Ipioca Mar Resort (IMR)
+# LP Ipioca Mar Resort (IMR) v2
 
-Landing pages do Clube de Férias · MME Vacation Club — teste A/B.
+Landing page do Clube de Férias · MME Vacation Club, nova versão.
 
-| Página | Arquivo | Diferença |
-|--------|---------|-----------|
-| Versão A | `lp.html` | preço tradicional R$ 12.800 |
-| Versão B | `lp-b.html` | preço tradicional R$ 10.500 (range 9–12) |
+Base: versão B do teste A/B do repositório `lps-imr` (preço tradicional R$ 10.500, range 9 a 12 mil).
 
-Imagens em `img/`. Meta Pixel (ID `1327404826244288`) dispara PageView + Lead no submit.
+| Página | Arquivo |
+|--------|---------|
+| LP principal | `index.html` |
+
+Imagens em `img/`. Meta Pixel (ID `1327404826244288`) dispara PageView + Lead no submit. GTM `GTM-NSQPMJGV`. Leads enviados ao webhook Make da versão B (`LP_VARIANTE='B'`).
 
 Publicado via GitHub Pages.
