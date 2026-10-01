@@ -18,7 +18,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Ipioca Mar · Clube de Férias por 26 anos, MME Vacation Club</title>
-<meta name="description" content="3 semanas de férias por ano, durante 26 anos. Use no Ipioca Mar Resort, troque por mais de 4.300 hotéis e resorts pelo mundo via RCI ou aproveite a rede MME Hotéis."/>
+<meta name="description" content="3 semanas de férias por ano, durante 26 anos. Use no Ipioca Mar Resort, troque por mais de 4.300 hotéis e resorts pelo mundo via RCI."/>
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -277,7 +277,12 @@ section{padding:78px 0}
 @media(max-width:480px){.notgrid{grid-template-columns:1fr}}
 
 /* ===== SÓCIOS / GLOBO ===== */
-.socios{background:var(--cream2)}
+.socios{position:relative;overflow:hidden;background:var(--night);color:#fff}
+.socios-mosaic{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.socios-mosaic img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block}
+.socios::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(32,36,60,.72) 0%,rgba(32,36,60,.84) 50%,rgba(32,36,60,.72) 100%)}
+.socios .wrap{position:relative;z-index:1}
 .socios-grid{display:grid;grid-template-columns:1fr;gap:54px;align-items:center}
 .socios-info{text-align:center;max-width:760px;margin:0 auto}
 .globe-wrap{display:flex;justify-content:center}
@@ -289,8 +294,11 @@ section{padding:78px 0}
 .pin-dot:nth-child(3n){animation-delay:1s}
 .pin-dot:nth-child(4n){animation-delay:1.6s}
 .socios-info h2{font-size:clamp(30px,4vw,46px)}
-.socios-info h2 .tl{color:var(--teal)}
-.socios-info p{font-size:16.5px;color:var(--ink2);margin:16px auto 4px;max-width:560px}
+.socios-info h2{color:#fff}
+.socios-info h2 .tl{color:var(--teal-l)}
+.socios-info p{font-size:16.5px;color:#E4E6EF;margin:16px auto 4px;max-width:560px}
+.socios-mosaic .m-only{display:none}
+@media(max-width:640px){.socios-mosaic .m-only{display:block}.socios-mosaic{grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr)}}
 @media(max-width:980px){.socios-grid{grid-template-columns:1fr;gap:30px}.globe-wrap{display:none}}
 
 /* ===== DEPOIMENTOS ===== */
@@ -616,8 +624,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </h1>
       <p class="lead">
         <b>3 semanas de férias por ano</b>, com os valores das diárias congelados pelos próximos 26 anos.
-        Use no Ipioca Mar Resort, troque por <b>mais de 4.300 hotéis e resorts pelo mundo</b> via RCI
-        ou aproveite a rede MME Hotéis. Sem diária surpresa, sem improviso.
+        Use no Ipioca Mar Resort, troque por <b>mais de 4.300 hotéis e resorts pelo mundo</b> via RCI.
+        Sem surpresa com custos elevados das diárias.
       </p>
       <div class="btns">
         <a href="#como" class="btn btn-primary">Entenda como funciona →</a>
@@ -685,8 +693,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="notgrid">
       <div class="notcard rv">
         <div class="x">✕</div>
-        <h4>Não é um hotel</h4>
-        <p>Você não reserva diária. Você já tem suas semanas garantidas.</p>
+        <h4>Não é compra de diárias avulsas</h4>
+        <p>Você não paga hospedagem a cada viagem. Suas semanas já estão garantidas todo ano.</p>
       </div>
       <div class="notcard rv">
         <div class="x">✕</div>
@@ -711,14 +719,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- ===== SÓCIOS / GLOBO ===== -->
 <section class="socios" id="socios">
+  <div class="socios-mosaic" aria-hidden="true">
+    <img src="img/socio-1.webp" alt="" loading="lazy"/>
+    <img src="img/socio-4.webp" alt="" loading="lazy"/>
+    <img src="img/socio-2.webp" alt="" loading="lazy"/>
+    <img src="img/socio-5.webp" alt="" loading="lazy"/>
+    <img src="img/socio-3.webp" alt="" loading="lazy"/>
+    <img src="img/socio-4.webp" alt="" loading="lazy" class="m-only"/>
+  </div>
   <div class="wrap socios-grid">
     <div class="socios-info rv">
       <h2 class="display">Sócios espalhados<br><span class="tl">por toda a América Latina!</span></h2>
-      <p>Mais de 7 mil famílias já fazem parte do clube de férias do Ipioca Mar Resort.</p>
+      <p>Mais de 7 mil famílias já fazem parte do MME Vacation Club.</p>
       <p>Não é uma promessa nova. É uma comunidade que já viaja, já usa e já recomenda.</p>
       <div class="cta-row center">
         <a href="#depoimentos" class="btn btn-primary">Ver depoimentos de sócios →</a>
-        <a href="#contato" class="btn btn-light">Quero fazer parte</a>
+        <a href="#contato" class="btn btn-outline-light">Quero fazer parte</a>
       </div>
     </div>
   </div>
