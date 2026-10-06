@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<script>
+/* Sem a barra final (/lp-v2) o navegador busca img/ e video/ na raiz do domínio e dá 404.
+   Corrige a URL para /lp-v2/ sem recarregar, antes de qualquer imagem ser pedida. */
+(function(l){var p=l.pathname;
+  if(p.slice(-1)!=='/'&&p.split('/').pop().indexOf('.')<0){
+    try{history.replaceState(null,'',p+'/'+l.search+l.hash);}catch(e){l.replace(p+'/'+l.search+l.hash);}
+  }})(location);
+</script>
 <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
